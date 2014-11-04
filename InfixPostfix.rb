@@ -82,7 +82,22 @@ class InfixPostfix
 
   # applies the operators to num1 and num2 and returns the result
   def applyOperator(num1, num2, operator)
-
+	case operator
+	when '+'
+		return num1+num2
+	when '-'
+		return num1-num2
+	when '*'
+		return num1*num2
+	when '/'
+		return num1/num2
+	when '%'
+		return num1%num2
+	when '^'
+		return num1**num2
+	else
+		return 0
+	end
   end
   
 end # end InfixPostfix class
