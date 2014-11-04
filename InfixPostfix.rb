@@ -68,7 +68,16 @@ class InfixPostfix
 
   # returns the input precedence of the input operator
   def inputPrecedence(operator)
-
+	case operator
+	when '+','-'
+		return 1
+	when '*','/','%'
+		return 2
+	when '^'
+		return 4
+	else
+		return 5
+	end
   end
 
   # applies the operators to num1 and num2 and returns the result
