@@ -7,25 +7,25 @@ class InfixPostfix
   # converts the infix expression string to postfix expression and returns it
   def infixToPostfix(exprStr)
 	postfix = ""
-	my_array = exprStr.split(" ") #Creates array from tokenized exprStr
-	my_array.each do |token| #probably doesn't work
+	my_array = exprStr.split(' ') #Creates array from tokenized exprStr
+	my_array.each do |token| 
 		if leftParen?(token)
-			my_array.unshift(token)
+			my_array.push(token)
 		elsif operator?(token)
-			while (my_array.length > 0 && inputPrecedence(token) <= stackPrecedence(token))
-				postfix += postfix + my_array.shift + " "
+			while (my_array.length > 0 && stackPrecedence(my_array.last) > inputPrecedence(token))
+				postfix += postfix + my_array.pop + " "
 			end
 		elsif rightParen?(token)
-			while !leftParen?(my_array.first)
-				postfix += postfix + my_array.shift + " "
+			while !leftParen?(my_array.last)
+				postfix += postfix + my_array.pop + " "
 			end
-			my_array.shift	#pop
+			my_array.pop	#pop
 		else #isOperand = true
 			postfix += postfix + token + " "
 		end
 	end
 	while my_array.length > 0
-		postfix += postfix + my_array.shift + " "
+		postfix += postfix + my_array.pop + " "
 	end
 	return postfix
   end
