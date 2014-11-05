@@ -1,3 +1,4 @@
+# Authors: Michael Kinkema & Jack Rosenhauer
 #
 # InfixPostfix class contains methods for infix to postfix conversion and
 # postfix expression evaluation.
@@ -39,17 +40,18 @@ class InfixPostfix
   # evaluate the postfix string and returns the result
   def evaluatePostfix(exprStr)
 	my_array = exprStr.split(" ")
-	my_array.each do |token|  #Probably doesn't work
+	stack = Array.new()
+	my_array.each do |token|  
 		if operator?(token)
-			y = my_array.pop.to_i #pop the top element
-			x = my_array.pop.to_i 
+			y = stack.pop.to_i #pop the top element
+			x = stack.pop.to_i 
 			out = applyOperator(x,y,token)
-			my_array.push(out)  #Possibly need .to_s
+			stack.push(out)
 		else
-			my_array.push(token)
+			stack.push(token)
 		end	
 	end
-	return my_array.pop
+	return stack.pop
   end
 
   private # subsequent methods are private methods
@@ -131,7 +133,7 @@ class InfixPostfix
 	when '%'
 		return num1%num2
 	when '^'
-		return num1**num1
+		return num1**num2
 	else
 		return 0
 	end
@@ -142,7 +144,7 @@ end # end InfixPostfix class
 =begin
 ip = InfixPostfix.new()
 while true do
-  #ip = InfixPostfix.new()
+  ip = InfixPostfix.new()
   puts "(1) Convert Infix to Postfix Expression"
   puts "(2) Evaluate Postfix Expression"
   puts "(3) Quit"
@@ -155,7 +157,7 @@ while true do
     #puts "#{infix.first}"
     #puts "#{infix.last}"
   elsif selection == "2"
-    puts "2!!"
+    puts ip.evaluatePostfix(gets).to_s
   elsif selection == "3"
     exit
   else
