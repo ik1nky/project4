@@ -13,19 +13,19 @@ class InfixPostfix
 			my_array.push(token)
 		elsif operator?(token)
 			while (my_array.length > 0 && stackPrecedence(my_array.last) > inputPrecedence(token))
-				postfix += postfix + my_array.pop + " "
+				postfix = postfix + my_array.pop + " "
 			end
 		elsif rightParen?(token)
 			while !leftParen?(my_array.last)
-				postfix += postfix + my_array.pop + " "
+				postfix = postfix + my_array.pop + " "
 			end
 			my_array.pop	#pop
 		else #isOperand = true
-			postfix += postfix + token + " "
+			postfix = postfix + token + " "
 		end
 	end
 	while my_array.length > 0
-		postfix += postfix + my_array.pop + " "
+		postfix = postfix + my_array.pop + " "
 	end
 	return postfix
   end
