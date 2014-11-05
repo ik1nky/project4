@@ -9,14 +9,14 @@ class InfixPostfix
 	postfix = ""
 	my_array = exprStr.split(" ") #Creates array from tokenized exprStr
 	my_array.each do |token| #probably doesn't work
-		if isLeftParen(token)
+		if leftParen?(token)
 			my_array.unshift(token)
-		elsif isOperator(token)
-			while #(my_array.length > 0 && inputPrecedence(token) <= stackPrecedence(token))
+		elsif operator?(token)
+			while (my_array.length > 0 && inputPrecedence(token) <= stackPrecedence(token))
 				postfix += postfix + my_array.shift + " "
 			end
-		elsif isRightParen(token)
-			while #something
+		elsif rightParen?(token)
+			while !leftParen?(my_array.first)
 				postfix += postfix + my_array.shift + " "
 			end
 			my_array.shift	#pop
@@ -24,7 +24,7 @@ class InfixPostfix
 			postfix += postfix + token + " "
 		end
 	end
-	while #something
+	while my_array.length > 0
 		postfix += postfix + my_array.shift + " "
 	end
 	return postfix
@@ -34,7 +34,7 @@ class InfixPostfix
   def evaluatePostfix(exprStr)
 	my_array = exprStr.split(" ")
 	my_array.each do |token|  #Probably doesn't work
-		if isOperator(token)
+		if operator?(token)
 			y = my_array.shift #pop the top element
 			x = my_array.shift 
 			out = applyOperator(x,y,token)
@@ -130,5 +130,27 @@ class InfixPostfix
 		return 0
 	end
   end
-  
 end # end InfixPostfix class
+
+ip = InfixPostfix.new()
+while true do
+  #ip = InfixPostfix.new()
+  puts "(1) Convert Infix to Postfix Expression"
+  puts "(2) Evaluate Postfix Expression"
+  puts "(3) Quit"
+  puts 'Enter selection (1, 2, 3): '
+  selection = gets.chomp
+  if selection == "1"
+    puts "Enter Infix Expression: "
+    puts ip.infixToPostfix(gets).to_s
+
+    #puts "#{infix.first}"
+    #puts "#{infix.last}"
+  elsif selection == "2"
+    puts "2!!"
+  elsif selection == "3"
+    exit
+  else
+    puts "Unknown selection: " + selection
+  end
+end
