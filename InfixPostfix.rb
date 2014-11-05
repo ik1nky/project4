@@ -7,14 +7,16 @@ class InfixPostfix
   # converts the infix expression string to postfix expression and returns it
   def infixToPostfix(exprStr)
 	postfix = ""
-	my_array = exprStr.split(' ') #Creates array from tokenized exprStr
-	my_array.each do |token| 
+	my_array = Array.new()	
+	array = exprStr.split(' ') #Creates array from tokenized exprStr
+	array.each do |token| 
 		if leftParen?(token)
 			my_array.push(token)
 		elsif operator?(token)
-			while (my_array.length > 0 && stackPrecedence(my_array.last) > inputPrecedence(token))
+			while (my_array.length > 0) && (stackPrecedence(my_array.last) >= inputPrecedence(token))
 				postfix = postfix + my_array.pop + " "
 			end
+			my_array.push(token)
 		elsif rightParen?(token)
 			while !leftParen?(my_array.last)
 				postfix = postfix + my_array.pop + " "
@@ -25,7 +27,11 @@ class InfixPostfix
 		end
 	end
 	while my_array.length > 0
-		postfix = postfix + my_array.pop + " "
+		if(my_array.length != 1)
+			postfix = postfix + my_array.pop + " "
+		else
+			postfix = postfix + my_array.pop
+		end
 	end
 	return postfix
   end
@@ -35,15 +41,15 @@ class InfixPostfix
 	my_array = exprStr.split(" ")
 	my_array.each do |token|  #Probably doesn't work
 		if operator?(token)
-			y = my_array.shift #pop the top element
-			x = my_array.shift 
+			y = my_array.pop.to_i #pop the top element
+			x = my_array.pop.to_i 
 			out = applyOperator(x,y,token)
-			my_array.unshift(out)  #Possibly need .to_s
+			my_array.push(out)  #Possibly need .to_s
 		else
-			my_array.unshift(token)
+			my_array.push(token)
 		end	
 	end
-	return my_array.shift
+	return my_array.pop
   end
 
   private # subsequent methods are private methods
@@ -51,7 +57,7 @@ class InfixPostfix
   # returns true if the input is an operator and false otherwise
   def operator?(str)
   	case str
-	when '+','-','*','/','%','^','('
+	when '+','-','*','/','%','^'
 		return true
 	else
 		return false
@@ -125,13 +131,15 @@ class InfixPostfix
 	when '%'
 		return num1%num2
 	when '^'
-		return num1**num2
+		return num1**num1
 	else
 		return 0
 	end
   end
 end # end InfixPostfix class
 
+
+=begin
 ip = InfixPostfix.new()
 while true do
   #ip = InfixPostfix.new()
@@ -154,3 +162,4 @@ while true do
     puts "Unknown selection: " + selection
   end
 end
+=end
